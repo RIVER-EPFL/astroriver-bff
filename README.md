@@ -1,6 +1,16 @@
 # astroriver-bff
-The backend-for-frontend for astroriver
+The backend-for-frontend (BFF) API for the astroriver project.
 
+## Application relationships
+
+The resources required in this API require the database and endpoints served
+by:
+
+- [river-api](https://github.com/RIVER-EPFL/river-api)
+
+and supports the following applications:
+
+- [astroriver-ui](https://github.com/RIVER-EPFL/astroriver-ui)
 
 ## Getting started
 
