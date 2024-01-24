@@ -7,6 +7,7 @@ from app.areas import router as areas_router
 from app.sensors import router as sensors_router
 from app.sensordata import router as sensordata_router
 from app.users import router as users_router
+from app.astrocast import router as astrocast_router
 
 app = FastAPI()
 
@@ -61,6 +62,11 @@ app.include_router(
     sensordata_router,
     prefix=f"{config.API_PREFIX}/sensordata",
     tags=["sensordata"],
+)
+app.include_router(
+    astrocast_router,
+    prefix=f"{config.API_PREFIX}/astrocast",
+    tags=["astrocast"],
 )
 app.include_router(
     users_router,

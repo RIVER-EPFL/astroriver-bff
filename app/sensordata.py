@@ -5,7 +5,7 @@ from app.utils import get_async_client
 import httpx
 from uuid import UUID
 from app.models.user import User
-from app.auth import require_admin
+from app.auth import require_admin, get_user_info
 
 router = APIRouter()
 
@@ -15,6 +15,7 @@ async def get_sensordata(
     client: httpx.AsyncClient = Depends(get_async_client),
     *,
     sensordata_id: UUID,
+    user: User = Depends(get_user_info),
 ) -> Any:
     """Get an individual sensordata record by id"""
 
@@ -33,6 +34,7 @@ async def get_all_sensordata(
     sort: str = Query(None),
     range: str = Query(None),
     client: httpx.AsyncClient = Depends(get_async_client),
+    user: User = Depends(get_user_info),
 ) -> Any:
     """Get all sensordata"""
 
