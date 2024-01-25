@@ -11,7 +11,7 @@ router = APIRouter()
 
 
 @router.get("/{astrocast_id}")
-async def get_astrocast(
+async def get_astrocast_message(
     client: httpx.AsyncClient = Depends(get_async_client),
     *,
     astrocast_id: UUID,
@@ -20,7 +20,7 @@ async def get_astrocast(
     """Get an individual astrocast message record by its local id"""
 
     res = await client.get(
-        f"{config.RIVER_API_URL}/v1/astrocast/{astrocast_id}",
+        f"{config.RIVER_API_URL}/v1/astrocast/messages/{astrocast_id}",
     )
 
     return res.json()
@@ -39,7 +39,7 @@ async def get_all_astrocast_messages(
     """Get all astrocast messages"""
 
     res = await client.get(
-        f"{config.RIVER_API_URL}/v1/astrocast",
+        f"{config.RIVER_API_URL}/v1/astrocast/messages/",
         params={"sort": sort, "range": range, "filter": filter},
     )
     response.headers["Access-Control-Expose-Headers"] = "Content-Range"
