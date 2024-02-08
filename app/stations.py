@@ -10,24 +10,24 @@ from app.auth import require_admin, get_user_info
 router = APIRouter()
 
 
-@router.get("/{sensor_id}")
-async def get_sensor(
+@router.get("/{station_id}")
+async def get_station(
     client: httpx.AsyncClient = Depends(get_async_client),
     *,
-    sensor_id: UUID,
+    station_id: UUID,
     user: User = Depends(get_user_info),
 ) -> Any:
-    """Get a sensor by id"""
+    """Get a station by id"""
 
     res = await client.get(
-        f"{config.RIVER_API_URL}/v1/sensors/{sensor_id}",
+        f"{config.RIVER_API_URL}/v1/stations/{station_id}",
     )
 
     return res.json()
 
 
 @router.get("")
-async def get_sensors(
+async def get_stations(
     response: Response,
     *,
     filter: str = Query(None),
@@ -36,10 +36,10 @@ async def get_sensors(
     client: httpx.AsyncClient = Depends(get_async_client),
     user: User = Depends(get_user_info),
 ) -> Any:
-    """Get all sensors"""
+    """Get all stations"""
 
     res = await client.get(
-        f"{config.RIVER_API_URL}/v1/sensors",
+        f"{config.RIVER_API_URL}/v1/stations",
         params={"sort": sort, "range": range, "filter": filter},
     )
     response.headers["Access-Control-Expose-Headers"] = "Content-Range"
@@ -49,45 +49,47 @@ async def get_sensors(
 
 
 @router.post("")
-async def create_sensor(
-    sensor: Any = Body(...),
+async def create_station(
+    station: Any = Body(...),
     client: httpx.AsyncClient = Depends(get_async_client),
     user: User = Depends(require_admin),
 ) -> Any:
-    """Creates a sensor"""
+    """Creates a station"""
 
     res = await client.post(
-        f"{config.RIVER_API_URL}/v1/sensors",
-        json=sensor,
+        f"{config.RIVER_API_URL}/v1/stations",
+        json=station,
     )
 
     return res.json()
 
 
-@router.put("/{sensor_id}")
-async def update_sensor(
-    sensor_id: UUID,
-    sensor: Any = Body(...),
+@router.put("/{station_id}")
+async def update_station(
+    station_id: UUID,
+    station: Any = Body(...),
     client: httpx.AsyncClient = Depends(get_async_client),
     user: User = Depends(require_admin),
 ) -> Any:
-    """ "Updates a sensor by id"""
+    """ "Updates a station by id"""
 
     res = await client.put(
-        f"{config.RIVER_API_URL}/v1/sensors/{sensor_id}", json=sensor
+        f"{config.RIVER_API_URL}/v1/stations/{station_id}", json=station
     )
 
     return res.json()
 
 
-@router.delete("/{sensor_id}")
-async def delete_sensor(
-    sensor_id: UUID,
+@router.delete("/{station_id}")
+async def delete_station(
+    station_id: UUID,
     client: httpx.AsyncClient = Depends(get_async_client),
     user: User = Depends(require_admin),
 ) -> None:
-    """Delete a sensor by id"""
+    """Delete a station by id"""
 
-    res = await client.delete(f"{config.RIVER_API_URL}/v1/sensors/{sensor_id}")
+    res = await client.delete(
+        f"{config.RIVER_API_URL}/v1/stations/{station_id}"
+    )
 
     return res.json()

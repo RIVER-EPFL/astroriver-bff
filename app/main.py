@@ -4,7 +4,7 @@ from app.config import config
 from app.models.config import KeycloakConfig
 from app.models.health import HealthCheck
 from app.areas import router as areas_router
-from app.sensors import router as sensors_router
+from app.stations import router as stations_router
 from app.sensordata import router as sensordata_router
 from app.users import router as users_router
 from app.astrocast_messages import router as astrocast_message_router
@@ -55,8 +55,8 @@ app.include_router(
     tags=["areas"],
 )
 app.include_router(
-    sensors_router,
-    prefix=f"{config.API_PREFIX}/sensors",
+    stations_router,
+    prefix=f"{config.API_PREFIX}/stations",
     tags=["sensors"],
 )
 app.include_router(
