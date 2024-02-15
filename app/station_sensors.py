@@ -11,7 +11,7 @@ router = APIRouter()
 
 
 @router.get("/{station_id}/{sensor_position}")
-async def get_station_sensor(
+async def get_station_sensor_by_position(
     client: httpx.AsyncClient = Depends(get_async_client),
     *,
     station_id: UUID,
@@ -23,6 +23,22 @@ async def get_station_sensor(
     res = await client.get(
         f"{config.RIVER_API_URL}/v1/"
         f"station_sensors/{station_id}/{sensor_position}",
+    )
+
+    return res.json()
+
+
+@router.get("/{station_sensor_id}")
+async def get_station_sensor(
+    client: httpx.AsyncClient = Depends(get_async_client),
+    *,
+    station_sensor_id: UUID,
+    user: User = Depends(get_user_info),
+) -> Any:
+    """Get a station sensor by station-sensor ID"""
+
+    res = await client.get(
+        f"{config.RIVER_API_URL}/v1/station_sensors/{station_sensor_id}",
     )
 
     return res.json()
@@ -66,10 +82,9 @@ async def create_station_sensor_mapping(
     return res.json()
 
 
-@router.put("/{station_id}/{sensor_position}")
+@router.put("/{station_sensor_id}")
 async def update_station_sensor_mapping(
-    station_id: UUID,
-    sensor_position: int,
+    station_sensor_id: UUID,
     station_sensor: Any = Body(...),
     client: httpx.AsyncClient = Depends(get_async_client),
     user: User = Depends(require_admin),
@@ -77,26 +92,23 @@ async def update_station_sensor_mapping(
     """Sets a station sensor mapping"""
 
     res = await client.put(
-        f"{config.RIVER_API_URL}/v1/"
-        f"station_sensors/{station_id}/{sensor_position}",
+        f"{config.RIVER_API_URL}/v1/" f"station_sensors/{station_sensor_id}",
         json=station_sensor,
     )
 
     return res.json()
 
 
-@router.delete("/{station_id}/{sensor_position}")
+@router.delete("/{station_sensor_id}")
 async def delete_station(
-    station_id: UUID,
-    sensor_position: int,
+    station_sensor_id: UUID,
     client: httpx.AsyncClient = Depends(get_async_client),
     user: User = Depends(require_admin),
 ) -> None:
     """Remove a station sensor mapping by station id and sensor position"""
 
     res = await client.delete(
-        f"{config.RIVER_API_URL}/v1/"
-        f"station_sensors/{station_id}/{sensor_position}",
+        f"{config.RIVER_API_URL}/v1/" f"station_sensors/{station_sensor_id}",
     )
 
     return res.json()
