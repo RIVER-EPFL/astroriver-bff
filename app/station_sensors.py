@@ -22,7 +22,7 @@ async def get_station_sensor_by_position(
 
     res = await client.get(
         f"{config.RIVER_API_URL}/v1/"
-        f"station_sensors/{station_id}/{sensor_position}",
+        f"stations/sensors/{station_id}/{sensor_position}",
     )
 
     return res.json()
@@ -38,7 +38,7 @@ async def get_station_sensor(
     """Get a station sensor by station-sensor ID"""
 
     res = await client.get(
-        f"{config.RIVER_API_URL}/v1/station_sensors/{station_sensor_id}",
+        f"{config.RIVER_API_URL}/v1/stations/sensors/{station_sensor_id}",
     )
 
     return res.json()
@@ -57,7 +57,7 @@ async def get_stations(
     """Get all station sensors"""
 
     res = await client.get(
-        f"{config.RIVER_API_URL}/v1/station_sensors",
+        f"{config.RIVER_API_URL}/v1/stations/sensors",
         params={"sort": sort, "range": range, "filter": filter},
     )
     response.headers["Access-Control-Expose-Headers"] = "Content-Range"
@@ -75,7 +75,7 @@ async def create_station_sensor_mapping(
     """Creates a station-sensor mapping"""
 
     res = await client.post(
-        f"{config.RIVER_API_URL}/v1/station_sensors",
+        f"{config.RIVER_API_URL}/v1/stations/sensors",
         json=station_sensor,
     )
 
@@ -92,7 +92,7 @@ async def update_station_sensor_mapping(
     """Sets a station sensor mapping"""
 
     res = await client.put(
-        f"{config.RIVER_API_URL}/v1/" f"station_sensors/{station_sensor_id}",
+        f"{config.RIVER_API_URL}/v1/" f"stations/sensors/{station_sensor_id}",
         json=station_sensor,
     )
 
@@ -108,7 +108,7 @@ async def delete_station(
     """Remove a station sensor mapping by station id and sensor position"""
 
     res = await client.delete(
-        f"{config.RIVER_API_URL}/v1/" f"station_sensors/{station_sensor_id}",
+        f"{config.RIVER_API_URL}/v1/" f"stations/sensors/{station_sensor_id}",
     )
 
     return res.json()
