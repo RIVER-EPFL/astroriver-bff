@@ -11,6 +11,8 @@ from app.astrocast_messages import router as astrocast_message_router
 from app.astrocast_devices import router as astrocast_device_router
 from app.station_sensors import router as station_sensor_router
 from app.sensors import router as sensor_router
+from app.station_data import station_data
+from app.sensor_parameters import sensor_parameters
 
 app = FastAPI()
 
@@ -90,4 +92,14 @@ app.include_router(
     station_sensor_router,
     prefix=f"{config.API_PREFIX}/station_sensors",
     tags=["sensors", "stations"],
+)
+app.include_router(  # Use abstracted router from sqlmodel-react-admin
+    station_data.router,
+    prefix=f"{config.API_PREFIX}{station_data.prefix}",
+    tags=["station_data"],
+)
+app.include_router(
+    sensor_parameters.router,
+    prefix=f"{config.API_PREFIX}/sensor_parameters",
+    tags=["sensor_parameters"],
 )
