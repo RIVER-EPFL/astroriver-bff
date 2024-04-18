@@ -13,8 +13,20 @@ from app.station_sensors import router as station_sensor_router
 from app.sensors import router as sensor_router
 from app.station_data import station_data
 from app.sensor_parameters import sensor_parameters
+from contextlib import asynccontextmanager
+import httpx
 
-app = FastAPI()
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Initialise the Client on startup and add it to the state
+    # http://127.0.0.1:8001/ is the base_url of the other server that requests should be forwarded to
+    async with httpx.AsyncClient(base_url="http://127.0.0.1:8001/") as client:
+        yield {"client": client}
+        # The Client closes on shutdown
+
+
+app = FastAPI(lifespan=lifespan)
 
 
 origins = ["*"]
