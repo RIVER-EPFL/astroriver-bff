@@ -12,7 +12,7 @@ from app.astrocast_devices import router as astrocast_device_router
 from app.station_sensors import router as station_sensor_router
 from app.sensors import router as sensor_router
 from app.station_data import station_data
-from app.sensor_parameters import sensor_parameters
+from app.sensor_parameters import router as sensor_parameters
 from contextlib import asynccontextmanager
 import httpx
 
@@ -111,7 +111,7 @@ app.include_router(  # Use abstracted router from sqlmodel-react-admin
     tags=["station_data"],
 )
 app.include_router(
-    sensor_parameters.router,
+    sensor_parameters,
     prefix=f"{config.API_PREFIX}/sensor_parameters",
     tags=["sensor_parameters"],
 )
